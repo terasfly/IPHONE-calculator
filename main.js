@@ -30,3 +30,74 @@ document.querySelector('.buttons').onclick = (event) => {
         // button pressed is displayed
 
         const key = event.target.textContent;
+     console.log(key)
+
+    //if pressed key 0-9 or .
+    // jei paspausta knopke neyuri b nieko ir sign neturi nieko
+    // tada a+= kaskart paspaudus prisideda skaiciusjj
+    //2. paspaudus b antra skaiciu b tuscias ir sign jau uzpildytas pvz + 
+    //nesuveiks o suveiks  2 blokas
+    //  } else {
+    //     b += key;
+    //     out.textContent = a;
+    // }
+    if (digit.includes(key)) {
+        if (b === '' && sign === '') {
+            a += key;
+            console.log(a, b, sign);
+            out.textContent = a;
+        } else if (a !== '' && b !== '' && finish) {
+            b = key;
+            finish = false;
+            out.textContent = b;
+
+        } else {
+            b += key;
+            out.textContent = b;
+        }
+        console.log(a, b, sign);
+        return;
+
+    }
+    //if pressed sign button
+    //paspaudus sign suveiks sis if
+    if (action.includes(key)) {
+        sign += key;
+        out.textContent = sign;
+        console.log(a, b, sign);
+        return
+    }
+
+    //press =
+
+    if (key === '=') {
+        switch (sign) {
+            case '+':
+                a = (+a) + (+b);
+                break;
+            case '-':
+                a = a - b;
+                break;
+            case 'X':
+                a = a * b;
+                break;
+            case '/':
+                if (b === '0') {
+                    out.textContent = 'fail';
+                    a = '';
+                    b = '';
+                    sign = '';
+                    return
+                }
+                a = a / b;
+                break;
+        }
+        finish = true;
+        out.textContent = a;
+        console.log(a, b, sign)
+    }
+
+
+
+
+}

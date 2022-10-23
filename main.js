@@ -1,80 +1,56 @@
-let a = '' // first number
-let b = '' // second number
-let sign = '' // operation sign
+let a = '';
+let b = '';
+let sign = '';
 let finish = false;
 
-const digit = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
+const digit = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '.'];
+const action = ['-', '+', 'X', '/'];
 
-const action = ['-', '+', 'x', '/'];
+//1.Connect screen to js
+const out = document.querySelector('.calc-screen p')
 
-//Screen
-
-const out = document.querySelector('.calc-screen p');
-
-function clearAll() {
-    a = ''; //first number and result
-    b = '' //second number;
-    sign = ''; // operation sign
-    finish = false;
+//2.After press button AC clear all everything
+document.querySelector('.ac').addEventListener('click', () => {
+    a = '';
+    b = '';
+    sign = '';
     out.textContent = 0;
-}
-document.querySelector('.ac').onclick = clearAll;
 
-document.querySelector('.buttons').onclick = (event) => {
-        //didn't press on button
-        if (!event.target.classList.contains('btn')) return;
-        // press on clear all ac
-        if (event.target.classList.contains('ac')) return
+})
 
-        out.textContent = '';
-        // button pressed is displayed
+//3.conect buttons 
 
-        const key = event.target.textContent;
-     console.log(key)
+document.querySelector('.buttons').addEventListener('click', (event) => {
+    if (!event.target.classList.contains('btn')) return
+        // out.textContent = ''
 
-    //if pressed key 0-9 or .
-    // jei paspausta knopke neyuri b nieko ir sign neturi nieko
-    // tada a+= kaskart paspaudus prisideda skaiciusjj
-    //2. paspaudus b antra skaiciu b tuscias ir sign jau uzpildytas pvz + 
-    //nesuveiks o suveiks  2 blokas
-    //  } else {
-    //     b += key;
-    //     out.textContent = a;
-    // }
+    //4.Create key for every button
+    const key = event.target.textContent;
     if (digit.includes(key)) {
         if (b === '' && sign === '') {
             a += key;
-            console.log(a, b, sign);
             out.textContent = a;
-        } else if (a !== '' && b !== '' && finish) {
+        } else if (b !== '' && a !== '' && finish) {
             b = key;
             finish = false;
             out.textContent = b;
+
 
         } else {
             b += key;
             out.textContent = b;
         }
-        console.log(a, b, sign);
-        return;
-
     }
-    //if pressed sign button
-    //paspaudus sign suveiks sis if
+
     if (action.includes(key)) {
-        sign += key;
+        sign = key;
         out.textContent = sign;
-        console.log(a, b, sign);
-        return
     }
-
-    //press =
+    console.log(a, b, sign)
 
     if (key === '=') {
+        if (b === '') b = a;
         switch (sign) {
-            case '+':
-                a = (+a) + (+b);
-                break;
             case '-':
                 a = a - b;
                 break;
@@ -82,22 +58,18 @@ document.querySelector('.buttons').onclick = (event) => {
                 a = a * b;
                 break;
             case '/':
-                if (b === '0') {
-                    out.textContent = 'fail';
-                    a = '';
-                    b = '';
-                    sign = '';
-                    return
-                }
                 a = a / b;
                 break;
+            case '+':
+                a = (+a) + (+b)
+                break;
         }
-        finish = true;
         out.textContent = a;
-        console.log(a, b, sign)
+        finish = true;
     }
 
+})
 
 
 
-}
+
